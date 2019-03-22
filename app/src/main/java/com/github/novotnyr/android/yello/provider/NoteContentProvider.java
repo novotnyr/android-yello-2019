@@ -58,15 +58,25 @@ public class NoteContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int rows = db.delete(Provider.Note.TABLE_NAME, selection, selectionArgs);
+
+        ContentResolver contentResolver = getContext().getContentResolver();
+        contentResolver.notifyChange(CONTENT_URI, Defaults.NO_CONTENT_OBSERVER);
+
+        return rows;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int rows = db.update(Provider.Note.TABLE_NAME, values, selection, selectionArgs);
+
+        ContentResolver contentResolver = getContext().getContentResolver();
+        contentResolver.notifyChange(CONTENT_URI, Defaults.NO_CONTENT_OBSERVER);
+
+        return rows;
     }
 
     @Override
